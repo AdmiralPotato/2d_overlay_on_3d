@@ -1,4 +1,4 @@
-# I'm gonna try to make a 3D scene with interesting 2D overlays
+# Trying s 3D scene with 2D overlays
 
 Inspirations:
 
