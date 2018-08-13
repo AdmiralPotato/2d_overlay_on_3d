@@ -40,12 +40,14 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 let width
 let height
+let square
 const resize = () => {
   const clientWidth = canvas.clientWidth
   const clientHeight = canvas.clientHeight
   const dpr = window.devicePixelRatio
   width = clientWidth * dpr
   height = clientHeight * dpr
+  square = Math.min(width, height)
   if (
     canvas.width !== width ||
     canvas.height !== height
@@ -143,8 +145,8 @@ const animate = (time) => {
     const position = getScreenXY(object.center)
     object.circle.setAttributeNS(null, 'cx', '' + position.x)
     object.circle.setAttributeNS(null, 'cy', '' + position.y)
-    object.circle.setAttributeNS(null, 'r', '' + (width / 15))
-    object.circle.setAttributeNS(null, 'stroke-width', '' + (width / 150))
+    object.circle.setAttributeNS(null, 'r', '' + (square / 15))
+    object.circle.setAttributeNS(null, 'stroke-width', '' + (square / 150))
   })
 }
 
