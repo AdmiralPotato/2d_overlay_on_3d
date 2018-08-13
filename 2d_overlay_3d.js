@@ -138,14 +138,20 @@ for (let i = 0; i < mats.length * completeSets; i++) {
   const pivotA = new THREE.Group()
   const pivotB = new THREE.Group()
   const center = new THREE.Mesh(centerGeo, mats[i % mats.length])
-  const overlay = document.createElementNS(xmlns, 'use')
+  const overlay = document.createElementNS(xmlns, 'g')
+  const use = document.createElementNS(xmlns, 'use')
+  const text = document.createElementNS(xmlns, 'text')
   pivotA.position.y = 2
   center.position.y = 0.5
   center.castShadow = center.receiveShadow = true
   pivotA.add(center)
   pivotB.add(pivotA)
   group.add(pivotB)
-  overlay.setAttributeNS(xlinkns, 'xlink:href', '#overlay')
+  use.setAttributeNS(xlinkns, 'xlink:href', '#overlay')
+  text.setAttributeNS(null, 'class', 'text')
+  text.textContent = i
+  overlay.appendChild(use)
+  overlay.appendChild(text)
   svg.appendChild(overlay)
 
   objects.push({
@@ -172,8 +178,7 @@ const animate = (time) => {
   // 2D loop needs to be run after the 3D render so all matrices are "baked"
   objects.forEach((object) => {
     const position = getScreenXY(object.center)
-    object.overlay.setAttributeNS(null, 'x', '' + position.x)
-    object.overlay.setAttributeNS(null, 'y', '' + position.y)
+    object.overlay.setAttributeNS(null, 'transform', `translate(${position.x}, ${position.y})`)
   })
 }
 
