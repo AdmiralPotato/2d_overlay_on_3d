@@ -1,6 +1,7 @@
 const canvas = document.getElementById('3d')
 const svg = document.getElementById('2d')
 const xmlns = svg.getAttribute('xmlns')
+const xlinkns = "http://www.w3.org/1999/xlink";
 const renderer = new THREE.WebGLRenderer({
   canvas,
   alpha: true,
@@ -67,6 +68,7 @@ const resize = () => {
       false
     )
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
+    reziseDefs()
   }
 }
 
@@ -92,6 +94,33 @@ const getScreenXY = (object) => {
 
 // now to get creative
 
+const defs = document.createElementNS(xmlns, 'defs')
+const overlayDef = document.createElementNS(xmlns, 'g')
+const circle = document.createElementNS(xmlns, 'circle')
+const line = document.createElementNS(xmlns, 'path')
+overlayDef.setAttributeNS(null, 'id', 'overlay')
+circle.setAttributeNS(null, 'class', 'stroke')
+line.setAttributeNS(null, 'class', 'stroke')
+overlayDef.appendChild(circle)
+overlayDef.appendChild(line)
+defs.appendChild(overlayDef)
+svg.appendChild(defs)
+
+const reziseDefs = () => {
+  const strokeWidth = '' + (square / 150)
+  const lsa = (square / 25)
+  const lsb = (square / 30)
+  circle.setAttributeNS(null, 'r', '' + (square / 15))
+  circle.setAttributeNS(null, 'stroke-width', strokeWidth)
+  line.setAttributeNS(null, 'stroke-width', strokeWidth)
+  line.setAttributeNS(null, 'd', `
+    M-${lsa},-${lsa} L-${lsb},-${lsb}Z
+    M${lsa},-${lsa} L${lsb},-${lsb}Z
+    M-${lsa},${lsa} L-${lsb},${lsb}Z
+    M${lsa},${lsa} L${lsb},${lsb}Z
+  `)
+}
+
 const centerGeo = new THREE.DodecahedronGeometry(0.25, 0)
 const palette = ["#D4E6E0", "#EE720A", "#557E86", "#9E650F", "#475B4F", "#D8B85B"]
 const mats = [
@@ -109,21 +138,21 @@ for (let i = 0; i < mats.length * completeSets; i++) {
   const pivotA = new THREE.Group()
   const pivotB = new THREE.Group()
   const center = new THREE.Mesh(centerGeo, mats[i % mats.length])
-  const circle = document.createElementNS(xmlns, 'circle')
+  const overlay = document.createElementNS(xmlns, 'use')
   pivotA.position.y = 2
   center.position.y = 0.5
   center.castShadow = center.receiveShadow = true
   pivotA.add(center)
   pivotB.add(pivotA)
   group.add(pivotB)
-  circle.setAttributeNS(null, 'class', 'stroke')
-  svg.appendChild(circle)
+  overlay.setAttributeNS(xlinkns, 'xlink:href', '#overlay')
+  svg.appendChild(overlay)
 
   objects.push({
     pivotA,
     pivotB,
     center,
-    circle
+    overlay
   })
 }
 
@@ -141,12 +170,10 @@ const animate = (time) => {
   })
   renderer.render(scene, camera)
   // 2D loop needs to be run after the 3D render so all matrices are "baked"
-  objects.forEach((object, index) => {
+  objects.forEach((object) => {
     const position = getScreenXY(object.center)
-    object.circle.setAttributeNS(null, 'cx', '' + position.x)
-    object.circle.setAttributeNS(null, 'cy', '' + position.y)
-    object.circle.setAttributeNS(null, 'r', '' + (square / 15))
-    object.circle.setAttributeNS(null, 'stroke-width', '' + (square / 150))
+    object.overlay.setAttributeNS(null, 'x', '' + position.x)
+    object.overlay.setAttributeNS(null, 'y', '' + position.y)
   })
 }
 
