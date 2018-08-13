@@ -92,7 +92,7 @@ const getScreenXY = (object) => {
 
 // now to get creative
 
-const centerGeo = new THREE.CylinderBufferGeometry(0.25, 0.25, 0.125, 96)
+const centerGeo = new THREE.DodecahedronGeometry(0.25, 0)
 const palette = ["#D4E6E0", "#EE720A", "#557E86", "#9E650F", "#475B4F", "#D8B85B"]
 const mats = [
   new THREE.MeshStandardMaterial({color: palette[0], metalness: 0.1, roughness: 0.5}),
