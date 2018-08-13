@@ -1,5 +1,6 @@
 const canvas = document.getElementById('3d')
 const svg = document.getElementById('2d')
+const xmlns = svg.getAttribute('xmlns')
 const renderer = new THREE.WebGLRenderer({
   canvas,
   alpha: true,
@@ -63,6 +64,7 @@ const resize = () => {
       clientHeight,
       false
     )
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
   }
 }
 
@@ -73,6 +75,17 @@ const loop = (time) => {
 }
 const start = () => {
   requestAnimationFrame(loop)
+}
+
+const vector = new THREE.Vector3()
+const getScreenXY = (object) => {
+  vector.setFromMatrixPosition(object.matrixWorld)
+  vector.project(camera);
+
+  return {
+    x: (1 - (( vector.x + 1 ) * 0.5)) * width,
+    y: ((( vector.y + 1 ) * 0.5)) * height
+  }
 }
 
 // now to get creative
@@ -94,14 +107,22 @@ for (let i = 0; i < mats.length * completeSets; i++) {
   const pivotA = new THREE.Group()
   const pivotB = new THREE.Group()
   const center = new THREE.Mesh(centerGeo, mats[i % mats.length])
+  const circle = document.createElementNS(xmlns, 'circle')
   pivotA.position.y = 2
   center.position.y = 0.5
   center.castShadow = center.receiveShadow = true
   pivotA.add(center)
   pivotB.add(pivotA)
   group.add(pivotB)
+  circle.setAttributeNS(null, 'class', 'stroke')
+  svg.appendChild(circle)
 
-  objects.push({pivotA, pivotB, center})
+  objects.push({
+    pivotA,
+    pivotB,
+    center,
+    circle
+  })
 }
 
 const loopDuration = 4
@@ -109,6 +130,7 @@ const tau = Math.PI * 2
 const animate = (time) => {
   const phase = time / 1000 / loopDuration / completeSets
   const objectFrac = 1 / objects.length
+  // 3D loop
   objects.forEach((object, index) => {
     const frac = index * objectFrac
     object.pivotB.rotation.z = (phase + frac) * tau
@@ -116,6 +138,14 @@ const animate = (time) => {
     object.center.rotation.x = (phase + frac) * tau * 4
   })
   renderer.render(scene, camera)
+  // 2D loop needs to be run after the 3D render so all matrices are "baked"
+  objects.forEach((object, index) => {
+    const position = getScreenXY(object.center)
+    object.circle.setAttributeNS(null, 'cx', '' + position.x)
+    object.circle.setAttributeNS(null, 'cy', '' + position.y)
+    object.circle.setAttributeNS(null, 'r', '' + (width / 15))
+    object.circle.setAttributeNS(null, 'stroke-width', '' + (width / 150))
+  })
 }
 
 start()
