@@ -1,4 +1,4 @@
-# Trying s 3D scene with 2D overlays
+# Trying a 3D scene with 2D overlays
 
 Inspirations:
 
