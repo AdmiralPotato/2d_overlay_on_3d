@@ -58,5 +58,5 @@ svg {
 .text{
     stroke: none;
     fill: #fff;
-    text-align: center;
+    text-archor: middle;
 }
