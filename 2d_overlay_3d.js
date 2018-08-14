@@ -216,7 +216,7 @@ const animate = (time) => {
     object.overlay.setAttributeNS(null, 'transform', `translate(${position.x}, ${position.y})`)
     object.text.setAttributeNS(null, 'x', pointC.x)
     object.text.setAttributeNS(null, 'y', pointC.y)
-    object.text.style.setProperty('font-size', '' + (circleRadius * 0.75))
+    object.text.style.setProperty('font-size', (circleRadius * 0.75) + 'px')
   })
   miscLines.setAttributeNS(null, 'd', lineInstructions.join(' '))
 }
