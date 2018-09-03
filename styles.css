@@ -51,11 +51,11 @@ svg {
 .stroke{
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke: #fff;
+    stroke: #888;
     fill: transparent;
 }
 
 .text{
     stroke: none;
-    fill: #fff;
+    fill: #888;
 }
