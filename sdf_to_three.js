@@ -53,7 +53,7 @@ const sdfTextToThreeSnatom = (sdfText, atomDataMap, rotation) => {
     data.maxBondLength = Math.max(data.maxBondLength, bond.length)
     data.minBondLength = Math.min(data.minBondLength, bond.length)
   })
-  const baseAtomScale = data.maxBondLength * 0.5
+  const baseAtomScale = ((data.maxBondLength - data.minBondLength) * 0.5) + data.minBondLength * 0.6
   data.atoms.forEach((atom) => {
     const atomData = atomDataMap[atom.symbol.toLocaleLowerCase()]
     if(!atomData) {
