@@ -137,12 +137,12 @@ const reziseDefs = () => {
 
 const materialBase = {metalness: 0.1, roughness: 0.5}
 const atomDataMap = {
-  h: {scale: 0.5, material: new THREE.MeshStandardMaterial({color: '#b1cbbf', ...materialBase})},
-  c: {scale: 1.0, material: new THREE.MeshStandardMaterial({color: '#425d61', ...materialBase})},
-  o: {scale: 1.1, material: new THREE.MeshStandardMaterial({color: '#c41715', ...materialBase})},
-  n: {scale: 1.1, material: new THREE.MeshStandardMaterial({color: '#0b5366', ...materialBase})},
-  cl: {scale: 1.2, material: new THREE.MeshStandardMaterial({color: '#216359', ...materialBase})},
-  na: {scale: 1.2, material: new THREE.MeshStandardMaterial({color: '#474a9c', ...materialBase})},
+  h: {scale: 0.5, material: new THREE.MeshStandardMaterial(Object.assign({color: '#b1cbbf'}, materialBase))},
+  c: {scale: 1.0, material: new THREE.MeshStandardMaterial(Object.assign({color: '#425d61'}, materialBase))},
+  o: {scale: 1.1, material: new THREE.MeshStandardMaterial(Object.assign({color: '#c41715'}, materialBase))},
+  n: {scale: 1.1, material: new THREE.MeshStandardMaterial(Object.assign({color: '#0b5366'}, materialBase))},
+  cl: {scale: 1.2, material: new THREE.MeshStandardMaterial(Object.assign({color: '#216359'}, materialBase))},
+  na: {scale: 1.2, material: new THREE.MeshStandardMaterial(Object.assign({color: '#474a9c'}, materialBase))},
 }
 const molecules = [
   {name: 'Sucrose', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5988/sdf?record_type=3d'},
