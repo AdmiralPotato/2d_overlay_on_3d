@@ -148,11 +148,11 @@ const molecules = [
   {name: 'Sucrose', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5988/sdf?record_type=3d'},
   {name: 'Nicotine', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/89594/sdf?record_type=3d'},
   {name: 'Cholesterol', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5997/sdf?record_type=3d', rotation: new THREE.Euler(0, 0, -Math.PI / 2)},
-  {name: 'Caffeine', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2519/sdf?record_type=3d'},
+  {name: 'Methylphenidate', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4158/sdf?record_type=3d'},
   {name: 'Salt', path: 'https://cactus.nci.nih.gov/chemical/structure/[Cl-][Na+]/file?format=sdf&get3d=True'},
   {name: 'Alcohol', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5798/sdf?record_type=3d'},
   {name: 'THC', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/16078/sdf?record_type=3d'},
-  {name: 'Methylphenidate', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/4158/sdf?record_type=3d'}
+  {name: 'Caffeine', path: 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2519/sdf?record_type=3d'}
 ]
 
 let objects = []
@@ -250,7 +250,7 @@ const animate = (time) => {
   // 3D loop
   objects.forEach((object, index) => {
     const frac = index * objectFrac
-    object.pivotB.rotation.z = (phase + frac) * tau
+    object.pivotB.rotation.z = ((phase * completeSets) + 0.5 + frac) * tau
     object.pivotA.rotation.y = (phase + frac) * tau * 4
     object.molecule.rotation.z = (phase + frac) * tau * -2
   })
