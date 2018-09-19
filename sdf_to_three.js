@@ -1,4 +1,4 @@
-const atomGeometry = new THREE.IcosahedronGeometry(1, 3)
+const atomGeometry = new THREE.IcosahedronGeometry(1, 1)
 const instructionHandlers = {
   // atom
   '16': (args, data) => {
