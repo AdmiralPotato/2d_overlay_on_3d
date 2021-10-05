@@ -157,36 +157,13 @@ const molecules = [
 
 let objects = []
 const completeSets = 2
-const makeRequest = async (url) => {
-  return fetch(
-    url,
-    {
-      method: 'GET',
-      cache: 'force-cache'
-    }
-  )
-}
-const makeObjects = async () => {
-  const parsedMolecules = await Promise.all(molecules.map(async (molecule) => {
-    let response
-    while (
-      !response ||
-      (
-        !response.ok &&
-        response.status >= 500
-      )) {
-      // sometimes nih.gov returns 500 range errors - try again
-      if (response) {
-        console.log(`Error loading "${molecule.path}", trying again`)
-      }
-      response = await makeRequest(molecule.path)
-    }
-    molecule.sdfText = response.ok ? await response.text() : ''
+const makeObjects = () => {
+  molecules.forEach((molecule) => {
+    molecule.sdfText = sdfData[molecule.path]
     const parsedMolecule = sdfTextToThreeSnatom(molecule.sdfText, atomDataMap, molecule.rotation)
     molecule.data = parsedMolecule.data
     molecule.model = parsedMolecule.model
-    return molecule
-  }))
+  })
   let moleculeScale = -Infinity
   let moleculeScaleVector = new THREE.Vector3()
   molecules.forEach((molecule) => {
@@ -256,7 +233,6 @@ const animate = (time) => {
   })
   renderer.render(scene, camera)
   // 2D loop needs to be run after the 3D render so all matrices are "baked"
-  const lineInstructions = []
   circleRadiusVector.set(circleRadius, 0)
   objects.forEach((object) => {
     const position = getScreenXY(object.molecule)
