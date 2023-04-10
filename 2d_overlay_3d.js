@@ -248,7 +248,7 @@ const animate = (time) => {
     object.overlay.setAttributeNS(null, 'transform', `translate(${position.x}, ${position.y})`)
     object.text.setAttributeNS(null, 'x', pointC.x)
     object.text.setAttributeNS(null, 'y', pointC.y)
-    object.text.style.setProperty('font-size', fontSize)
+    object.text.setAttributeNS(null, 'font-size', fontSize)
   })
 }
 
